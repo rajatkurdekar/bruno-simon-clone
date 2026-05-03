@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>Bruno Simon</title>
+    <meta name="description" content="Bruno Simon's creative portfolio — drive a toy car through a 3D world">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=block" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96">
+    <link rel="shortcut icon" href="/favicons/favicon.ico">
+</head>
+<body>
+
+    <!-- Font preload elements -->
+    <div class="js-fonts-loader fonts-loader">
+        <div class="font nunito" data-font="400 20px Nunito"> </div>
+        <div class="font amatic-sc" data-font="700 20px 'Amatic SC'"> </div>
+        <div class="font pally" data-font="500 20px Pally-Medium"> </div>
+    </div>
+
+    <!-- Loading screen -->
+    <div id="loading-screen">
+        <div class="loading-inner">
+            <div class="loading-title">Bruno's</div>
+            <div class="loading-subtitle">Portfolio · Loading</div>
+            <div class="loading-progress-container">
+                <div class="js-loading-bar loading-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game">
+
+        <canvas class="js-canvas"></canvas>
+
+        <!-- Speed lines overlay (CSS, driven by SpeedLines.ts) -->
+        <div class="js-speed-lines speed-lines"></div>
+
+        <!-- Touch controls (mobile) -->
+        <div class="js-touch-buttons touch-buttons">
+            <div class="js-overlay overlay"></div>
+            <div class="list">
+                <button data-name="interact" class="js-button interact">Interact</button>
+                <button data-name="unstuck" class="js-button unstuck">Unstuck</button>
+                <button data-name="previous" class="js-button previous">
+                    <img src="/ui/actions/actions-icon-arrow.webp" onerror="this.src='/ui/actions/actions-icon-arrow.png'" alt="prev">
+                </button>
+                <button data-name="next" class="js-button next">
+                    <img src="/ui/actions/actions-icon-arrow.webp" onerror="this.src='/ui/actions/actions-icon-arrow.png'" alt="next" style="transform:rotate(180deg)">
+                </button>
+                <button data-name="open" class="js-button open">
+                    <img src="/ui/actions/actions-icon-open.webp" onerror="this.src='/ui/actions/actions-icon-open.png'" alt="open">
+                </button>
+                <button data-name="close" class="js-button close">
+                    <img src="/ui/actions/actions-icon-close.webp" onerror="this.src='/ui/actions/actions-icon-close.png'" alt="close">
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu trigger (top-right hamburger) -->
+        <button class="js-menu-trigger menu-trigger" aria-label="Menu">
+            <div class="button-inner">
+                <div class="icon-container">
+                    <div class="icon">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+            </div>
+        </button>
+
+        <!-- Map trigger (bottom-right) -->
+        <button class="js-map-trigger map-trigger" aria-label="Map">
+            <div class="button-inner">
+                <div class="icon-container">
+                    <img class="map-icon" src="/ui/map.svg" loading="lazy" alt="map" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </button>
+
+        <!-- Section popup (zone info, bottom-center) -->
+        <div class="js-section-popup section-popup" style="opacity:0">
+            <div class="section-popup-inner">
+                <div class="js-section-dot section-dot"></div>
+                <div class="section-popup-text">
+                    <div class="js-section-title section-title">Area</div>
+                    <div class="js-section-subtitle section-subtitle">Drive nearby to explore</div>
+                </div>
+                <div class="js-section-actions section-actions"></div>
+            </div>
+        </div>
+
+        <!-- Circuit overlay (top-center, shown during race) -->
+        <div class="js-circuit circuit">
+            <div class="js-circuit-countdown circuit-countdown"></div>
+            <div class="js-circuit-timer circuit-timer">0:00.00</div>
+        </div>
+
+        <!-- Whisper bubble (bottom-left, shown near zones) -->
+        <div class="js-whisper whisper">
+            <div class="whisper-inner">
+                <img class="whisper-icon-img" src="/ui/whispers/whisper-fill.svg" loading="lazy" alt="" onerror="this.style.display='none'">
+                <div class="whisper-body">
+                    <div class="js-whisper-title whisper-title"></div>
+                    <div class="js-whisper-text whisper-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jukebox UI (bottom-center, shown near jukebox zone) -->
+        <div class="js-jukebox jukebox">
+            <div class="jukebox-inner">
+                <div class="jukebox-header">
+                    <div class="jukebox-title">Jukebox</div>
+                    <button class="js-jukebox-close jukebox-close" aria-label="Close jukebox">
+                        <img src="/ui/close.svg" loading="lazy" alt="close" onerror="this.textContent='×'">
+                    </button>
+                </div>
+                <div class="jukebox-tracks">
+                    <button class="js-jukebox-track jukebox-track" data-index="0">
+                        <span class="jukebox-track-bullet"></span>
+                        <span class="jukebox-track-name">Baguira</span>
+                    </button>
+                    <button class="js-jukebox-track jukebox-track" data-index="1">
+                        <span class="jukebox-track-bullet"></span>
+                        <span class="jukebox-track-name">Boy</span>
+                    </button>
+                    <button class="js-jukebox-track jukebox-track" data-index="2">
+                        <span class="jukebox-track-bullet"></span>
+                        <span class="jukebox-track-name">Sudo</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div class="js-modals modals">
+
+            <!-- Map modal -->
+            <div class="js-modal modal map-modal" data-modal-name="map">
+                <div class="js-modal-inner modal-inner map-modal-inner">
+                    <div class="modal-header">
+                        <div class="modal-title">Map</div>
+                        <button class="js-close modal-close" aria-label="Close">
+                            <img src="/ui/close.svg" loading="lazy" alt="close" onerror="this.textContent='×'">
+                        </button>
+                    </div>
+                    <div class="js-map-container map-container">
+                        <img class="js-texture map-texture" draggable="false" alt="map">
+                        <div class="js-player map-player">
+                            <img src="/ui/map/player.webp" onerror="this.src='/ui/map/player.png';this.onerror=null" alt="player" style="width:100%;height:100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ──────────────────────────────────────── MENU ──────────────────────────────────── -->
+        <div class="js-menu menu">
+            <div class="inner">
+
+                <button class="js-close close" aria-label="Close menu">
+                    <div class="button-inner">
+                        <div class="icon-container">
+                            <img class="icon is-default" src="/ui/close.svg" loading="lazy" alt="close">
+                        </div>
+                    </div>
+                </button>
+
+                <!-- ── Sidebar navigation ── -->
+                <div class="js-navigation navigation">
+
+                    <button class="js-navigation-item item" data-name="home" aria-label="Home">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/home.svg" loading="lazy" alt="home" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="options" aria-label="Options">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/gear.svg" loading="lazy" alt="options" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="controls" aria-label="Controls">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/controls/gamepad.svg" loading="lazy" alt="controls" onerror="this.src='/ui/wheel.svg'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="achievements" aria-label="Achievements">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/medal.svg" loading="lazy" alt="achievements" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="circuit" aria-label="Circuit">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/flag.svg" loading="lazy" alt="circuit" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="whispers" aria-label="Whispers">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/whispers/whisper-fill.svg" loading="lazy" alt="whispers" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="behindTheScene" aria-label="Behind The Scene">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/question.svg" loading="lazy" alt="info" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="js-navigation-item item" data-name="easter" aria-label="Easter Egg">
+                        <div class="button-inner">
+                            <div class="icon-container">
+                                <img src="/ui/egg.svg" loading="lazy" alt="easter" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                    </button>
+
+                </div>
+
+                <!-- ── Preview + Content ── -->
+                <div class="container">
+
+                    <div class="previews js-previews">
+                        <div class="js-preview preview home-preview">
+                            <img class="background" src="/ui/previews/home.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview options-preview">
+                            <img class="background" src="/ui/previews/options.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview controls-preview">
+                            <img class="background" src="/ui/previews/controls.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview achievements-preview">
+                            <img class="background" src="/ui/previews/achievements.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview circuit-preview">
+                            <img class="background" src="/ui/previews/circuit.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview whispers-preview">
+                            <img class="background" src="/ui/previews/whispers.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview behindTheScene-preview">
+                            <img class="background" src="/ui/previews/behindTheScene.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                        <div class="js-preview preview easter-preview">
+                            <img class="background" src="/ui/previews/easter.webp" loading="lazy" draggable="false" onerror="this.style.display='none'" alt="">
+                        </div>
+                    </div>
+
+                    <div class="contents js-contents">
+
+                        <!-- ─── Home ─── -->
+                        <div class="js-content content home-content">
+                            <div class="content-inner">
+                                <div class="title">Bruno Simon</div>
+                                <p class="text">Hey! I'm <strong>Bruno Simon</strong>, a <strong>creative developer</strong> from Paris who loves building interactive experiences for the web.</p>
+                                <p class="text">Drive around to explore my portfolio and discover hidden secrets along the way. Find all <strong>17 achievements</strong> to prove you're a true explorer!</p>
+                                <div class="horizontal-group">
+                                    <a class="button" href="https://threejs-journey.com" target="_blank" rel="noopener">Three.js Journey</a>
+                                    <a class="button" href="https://x.com/bruno_simon" target="_blank" rel="noopener">Twitter / X</a>
+                                    <a class="button" href="https://github.com/brunosimon" target="_blank" rel="noopener">GitHub</a>
+                                    <a class="button" href="https://discord.gg/threejs-journey" target="_blank" rel="noopener">
+                                        <img src="/ui/discord.svg" loading="lazy" alt="" style="width:13px;height:13px;margin-right:6px;filter:invert(1) opacity(0.7)" onerror="this.style.display='none'">
+                                        Discord
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ─── Options ─── -->
+                        <div class="js-content content options-content">
+                            <div class="content-inner">
+                                <div class="title">Options</div>
+                                <table class="options">
+                                    <tbody>
+                                        <tr>
+                                            <td>Sound</td>
+                                            <td>
+                                                <button class="js-audio-toggle button is-small has-tooltip">
+                                                    <div class="tooltip">Toggle all audio on/off</div>
+                                                    <span class="js-audio-label">On</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Night mode</td>
+                                            <td>
+                                                <button class="js-night-mode-toggle button is-small has-tooltip">
+                                                    <div class="tooltip">Toggle day / night atmosphere</div>
+                                                    <span class="js-night-mode-label">Day</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Quality</td>
+                                            <td>
+                                                <button class="js-quality-toggle button is-small has-tooltip">
+                                                    <div class="tooltip">Toggle post-processing quality</div>
+                                                    <span class="js-quality-label">High</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Respawn</td>
+                                            <td>
+                                                <button class="js-respawn button is-small has-tooltip">
+                                                    <div class="tooltip">Teleport back to nearest checkpoint</div>
+                                                    Respawn
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Renderer</td>
+                                            <td>
+                                                <button class="js-renderer button is-small is-disabled has-tooltip">
+                                                    <div class="js-tooltip tooltip">Initializing…</div>
+                                                    <span class="js-renderer-label">WebGL</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ─── Controls ─── -->
+                        <div class="js-content content controls-content">
+                            <div class="content-inner">
+                                <div class="title">Controls</div>
+                                <div class="controls-list text text-small">
+                                    <table>
+                                        <tbody>
+                                            <tr><td><span class="key">W</span> <span class="key">A</span> <span class="key">S</span> <span class="key">D</span> / <span class="key">↑↓←→</span></td><td>Drive</td></tr>
+                                            <tr><td><span class="key">SHIFT</span></td><td>Boost</td></tr>
+                                            <tr><td><span class="key">B</span> or <span class="key">CTRL</span></td><td>Brake</td></tr>
+                                            <tr><td><span class="key">SPACE</span></td><td>Jump / Flip</td></tr>
+                                            <tr><td><span class="key">H</span></td><td>Honk</td></tr>
+                                            <tr><td><span class="key">R</span></td><td>Respawn</td></tr>
+                                            <tr><td><span class="key">M</span></td><td>Toggle map</td></tr>
+                                            <tr><td><span class="key">1</span> <span class="key">2</span> <span class="key">3</span> <span class="key">4</span></td><td>Wheel hydraulics</td></tr>
+                                            <tr><td><span class="key">DRAG</span></td><td>Rotate camera</td></tr>
+                                            <tr><td><span class="key">SCROLL</span></td><td>Zoom in / out</td></tr>
+                                            <tr><td><span class="key">ESC</span></td><td>Close menu</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ─── Achievements ─── -->
+                        <div class="js-content content achievements-content">
+                            <div class="content-inner">
+                                <div class="title">Achievements</div>
+                                <p class="text">Drive around and discover secrets to unlock all achievements. Some are hidden — you'll have to find them yourself!</p>
+                                <div class="js-achievements-list achievements-list"></div>
+                            </div>
+                        </div>
+
+                        <!-- ─── Circuit ─── -->
+                        <div class="js-content content circuit-content">
+                            <div class="content-inner">
+                                <div class="title">Circuit</div>
+                                <p class="text">Find the circuit zone and race through it as fast as you can. Your best time is saved automatically.</p>
+                                <div class="circuit-records">
+                                    <div class="circuit-record">
+                                        <div class="circuit-record-label">Best time</div>
+                                        <div class="circuit-record-value js-circuit-menu-best">--:--.--</div>
+                                    </div>
+                                    <div class="circuit-record">
+                                        <div class="circuit-record-label">Last time</div>
+                                        <div class="circuit-record-value js-circuit-menu-last">--:--.--</div>
+                                    </div>
+                                </div>
+                                <p class="text" style="margin-top:4px;font-size:11px;opacity:0.5">Tip: enter the circuit area to begin the countdown automatically.</p>
+                            </div>
+                        </div>
+
+                        <!-- ─── Whispers ─── -->
+                        <div class="js-content content whispers-content">
+                            <div class="content-inner">
+                                <div class="title">Whispers</div>
+                                <p class="text">Drive close to points of interest to unlock whispers. There are 6 to discover across the world.</p>
+                                <div class="js-whispers-list whispers-list"></div>
+                            </div>
+                        </div>
+
+                        <!-- ─── Behind The Scene ─── -->
+                        <div class="js-content content behindTheScene-content">
+                            <div class="content-inner">
+                                <div class="title">Behind The Scene</div>
+                                <p class="text">This portfolio is built entirely with web technologies and runs in the browser with zero plugins.</p>
+                                <table class="options">
+                                    <tbody>
+                                        <tr><td>Renderer</td><td><span class="js-renderer-label">WebGPU / WebGL2</span></td></tr>
+                                        <tr><td>Physics</td><td>Rapier (WASM)</td></tr>
+                                        <tr><td>3D Library</td><td>Three.js r170+</td></tr>
+                                        <tr><td>Audio</td><td>Howler.js</td></tr>
+                                        <tr><td>Animations</td><td>GSAP</td></tr>
+                                        <tr><td>Camera</td><td>camera-controls</td></tr>
+                                        <tr><td>Font</td><td>Pally</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="horizontal-group" style="margin-top:4px">
+                                    <a class="button" href="https://github.com/brunosimon" target="_blank" rel="noopener">GitHub</a>
+                                    <a class="button" href="https://threejs-journey.com" target="_blank" rel="noopener">Three.js Journey</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ─── Easter Egg ─── -->
+                        <div class="js-content content easter-content">
+                            <div class="content-inner">
+                                <div class="title">Easter Egg</div>
+                                <p class="text">Something is hidden somewhere in this world… Are you curious enough to find it?</p>
+                                <div class="easter-teaser">
+                                    <div class="easter-egg-icon">🥚</div>
+                                    <div class="easter-egg-hint">Keep exploring to discover the secret.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications (toast system) -->
+        <div class="js-notifications notifications"></div>
+
+        <!-- Black fade overlay -->
+        <div class="js-overlay-fade overlay-fade"></div>
+
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
