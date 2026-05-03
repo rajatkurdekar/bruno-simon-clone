@@ -1,0 +1,91 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "sans-serif",
+      "count": 124
+    },
+    {
+      "family": "Nunito",
+      "count": 112
+    },
+    {
+      "family": "Amatic SC",
+      "count": 12
+    }
+  ],
+  "colors": {
+    "primary": "#FFCECA",
+    "secondary": "#FF87A2",
+    "accent": "#D5FF95",
+    "background": "#FFFFFF",
+    "textPrimary": "#000000",
+    "link": "#D5FF95"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Nunito",
+      "heading": "Nunito"
+    },
+    "fontStacks": {
+      "body": [
+        "Nunito",
+        "sans-serif"
+      ],
+      "heading": [
+        "Nunito",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Nunito",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "20px",
+      "h2": "40px",
+      "body": "20px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "0px"
+  },
+  "components": {},
+  "images": {
+    "logo": null,
+    "favicon": "https://bruno-simon.com/favicons/favicon-96x96.png",
+    "ogImage": "https://bruno-simon.com/social/share-image.png?cb=a"
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "unknown"
+  },
+  "designSystem": {
+    "framework": "unknown",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0,
+    "colors": 0,
+    "overall": 0
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": false,
+      "llmSucceeded": false,
+      "finalSource": "none",
+      "rawLogoSelection": {
+        "selectedLogoIndex": -1,
+        "selectedLogoReasoning": "LLM failed",
+        "confidence": 0
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": false,
+      "llmSucceeded": false,
+      "error": "LLM call failed or returned fallback values"
+    }
+  }
+}
