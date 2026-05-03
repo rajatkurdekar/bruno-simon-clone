@@ -2,7 +2,12 @@ node_modules
 .local
 .cache
 .config
+.pythonlibs
+attached_assets
+clone-data
 artifacts/api-server
 artifacts/mockup-sandbox
+lib
+scripts
 **/dist
 **/.replit-artifact
