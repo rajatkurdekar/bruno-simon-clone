@@ -1,0 +1,8 @@
+node_modules
+.local
+.cache
+.config
+artifacts/api-server
+artifacts/mockup-sandbox
+**/dist
+**/.replit-artifact
