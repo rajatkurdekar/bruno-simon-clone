@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Bruno Simon Portfolio Clone"
+version = "1.0.0"
+id = "artifacts/bruno-simon-clone"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24793
+
+[services.development]
+run = "pnpm --filter @workspace/bruno-simon-clone run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/bruno-simon-clone", "run", "build" ]
+publicDir = "artifacts/bruno-simon-clone/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24793"
+BASE_PATH = "/"
