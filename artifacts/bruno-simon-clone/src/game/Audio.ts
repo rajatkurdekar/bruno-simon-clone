@@ -115,6 +115,8 @@ export class Audio {
         sa('spin', [{ path: '/sounds/vehicle/spin/41051 Glass stone turning loop 09-full.mp3', loop: true, volume: 0 }])
 
         // ── Hit sounds ─────────────────────────────────────────────
+        sa('jump', [{ path: '/sounds/vehicle/springs/SpringMetalMovements_1u54Y_01.mp3', volume: 0.35 }])
+
         sa('hitDefault', [
             '/sounds/hits/defaults/Impact Soft 01.mp3',
             '/sounds/hits/defaults/Impact Soft 02.mp3',

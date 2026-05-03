@@ -263,14 +263,6 @@ export class View {
         this.roll.velocity *= Math.max(0, 1 - this.roll.damping * dt)
         this.roll.value += this.roll.velocity * dt
 
-        // Speed lines strength from vehicle speed
-        const sl = (this as any)._speedLines
-        if (game.physicalVehicle && sl) {
-            const speed = game.physicalVehicle.speed
-            const targetStrength = Math.min(speed / 8, 1)
-            sl.strength += (targetStrength - sl.strength) * dt * 3
-        }
-
         // Update optimal area
         this.optimalArea.position.copy(this.focusPoint.smoothedPosition)
 

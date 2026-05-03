@@ -66,7 +66,7 @@ export class Jukebox {
             if (area?.name?.toLowerCase().includes('jukebox')) {
                 this.isNearZone = true
                 this.show()
-                game.achievements?.unlock('dj')
+                game.achievements?.unlock('visitJukebox')
             }
         })
 
