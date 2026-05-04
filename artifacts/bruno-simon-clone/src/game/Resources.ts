@@ -24,7 +24,7 @@ export class Resources {
 
         try {
             this.ktx2Loader = new KTX2Loader()
-            this.ktx2Loader.setTranscoderPath('https://cdn.jsdelivr.net/npm/three@0.166.0/examples/jsm/libs/basis/')
+            this.ktx2Loader.setTranscoderPath('https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/libs/basis/')
             if (game.rendering?.renderer) {
                 this.ktx2Loader.detectSupport(game.rendering.renderer)
                 this.gltfLoader.setKTX2Loader(this.ktx2Loader)
